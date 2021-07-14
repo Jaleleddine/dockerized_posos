@@ -1,0 +1,34 @@
+version: "3.7"
+services:
+  # website
+  website:
+    hostname: pozos-website
+    image:  php:apache
+    container_name: "pozos-website"
+    volumes:
+      - ./website:/var/www/html
+    environment:
+      USERNAME: "pozos"
+      PASSWORD: "pozos"
+    networks:
+      - pozos
+    ports:
+      - 88:88
+    depends_on:
+      - api
+
+  # API
+  api:
+    hostname: pozos-api
+    image: student
+    container_name: "pozos-api"
+    volumes:
+      - ./simple_api/student_age.json:/data/student_age.json
+    ports:
+      - 4000:5000
+    networks:
+      - pozos
+
+networks:
+  pozos:
+    name: pozos
